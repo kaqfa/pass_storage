@@ -1,0 +1,14 @@
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+
+password.db
+# Ignore Gradle wrapper files
+gradlew
+gradlew.bat
+# Ignore local configuration files
+local.properties
+# Ignore Android Studio project-specific cache directory
+.idea

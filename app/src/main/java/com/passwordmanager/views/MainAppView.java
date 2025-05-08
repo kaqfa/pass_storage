@@ -1,0 +1,67 @@
+package com.passwordmanager.views;
+
+import com.passwordmanager.models.UserModel;
+import com.passwordmanager.utils.SessionManager;
+
+import javafx.scene.Scene;
+import javafx.scene.control.Dialog;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+
+public class MainAppView {
+    private final Stage parentStage;
+    private Scene scene;
+    private final BorderPane rootPanel;
+    private UserModel user;
+    private LeftPanelView leftPanelView;
+    private RightPanelView rightPanelView;
+
+    public MainAppView(Stage parentStage) {
+        this.parentStage = parentStage;
+        this.rootPanel = new BorderPane();
+        this.user = (UserModel) SessionManager.getInstance().getSesData("user");
+    }
+
+    public Scene getScene() {
+        showLoginDialog();
+        scene = new Scene(rootPanel, 800, 800);
+        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+        parentStage.setTitle("Aplikasi Penyimpanan Password");
+        return scene;
+    }
+
+    public void redrawAll() {
+        leftPanelView = new LeftPanelView();
+        rightPanelView = new RightPanelView(this);
+        
+        rootPanel.setLeft(leftPanelView.getView());
+        rootPanel.setCenter(rightPanelView.getView());
+    }
+
+    private void showLoginDialog() {
+        LoginDialog loginDialog = new LoginDialog();
+        Dialog<UserModel> dialog = loginDialog.getDialog();
+        dialog.showAndWait().ifPresent(loggedInUser -> {
+            if (loggedInUser != null) {
+                this.user = loggedInUser;
+            }
+            redrawAll();
+        });
+    }
+
+    public void showFolderDialog() {
+        FolderFormView folderFormView = new FolderFormView();
+        Dialog<String> dialog = folderFormView.getDialog();
+
+        dialog.showAndWait().ifPresent(folderName -> {
+            if (folderName != null && !folderName.isEmpty()) {
+                leftPanelView.refreshFolderTree();
+            }
+        });
+    }
+
+    public void logoutAction() {
+        SessionManager.getInstance().clearSession();
+        showLoginDialog();
+    }
+}

@@ -1,6 +1,6 @@
 # Aplikasi Password Manager
 
-Aplikasi Password Manager adalah sebuah aplikasi desktop yang dibangun menggunakan JavaFX untuk membantu pengguna mengelola password mereka dengan aman. 
+Aplikasi Password Manager adalah sebuah aplikasi desktop yang dibangun menggunakan JavaFX untuk membantu pengguna mengelola password mereka dengan aman.
 
 ## Fitur Utama
 

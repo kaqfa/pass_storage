@@ -7,7 +7,7 @@ import java.sql.Statement;
 public class InitDB {
     static String[] sql = {
                 """
-                CREATE TABLE IF NOT EXISTS folders (
+                CREATE TABLE IF NOT EXISTS folder (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     name TEXT NOT NULL,
                     user_id INTEGER NOT NULL,

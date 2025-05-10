@@ -1,0 +1,182 @@
+/* Bootstrap-like button styles */
+.btn {
+    -fx-background-color: #007bff; /* Primary blue */
+    -fx-text-fill: white; /* White text */
+    -fx-font-size: 12px; /* Font size */
+    -fx-font-weight: bold; /* Bold font */
+    -fx-font-family: "Arial"; /* Font family */
+    -fx-padding: 5px 10px; /* Padding */
+    -fx-border-radius: 4px; /* Rounded corners */
+    -fx-background-radius: 4px; /* Rounded corners */
+    -fx-border-color: transparent; /* No border */
+}
+
+.btn:hover {
+    -fx-background-color: #0056b3; /* Darker blue on hover */
+}
+
+.btn-primary {
+    -fx-background-color: #007bff; /* Primary blue */
+}
+
+.btn-primary:hover {
+    -fx-background-color: #0056b3; /* Darker blue */
+}
+
+.btn-secondary {
+    -fx-background-color: #6c757d; /* Gray */
+}
+
+.btn-secondary:hover {
+    -fx-background-color: #5a6268; /* Darker gray */
+}
+
+.btn-success {
+    -fx-background-color: #28a745; /* Green */
+}
+
+.btn-success:hover {
+    -fx-background-color: #218838; /* Darker green */
+}
+
+.btn-danger {
+    -fx-background-color: #dc3545; /* Red */
+}
+
+.btn-danger:hover {
+    -fx-background-color: #c82333; /* Darker red */
+}
+
+.btn-warning {
+    -fx-background-color: #ffc107; /* Yellow */
+}
+
+.btn-warning:hover {
+    -fx-background-color: #e0a800; /* Darker yellow */
+}
+
+.btn-info {
+    -fx-background-color: #17a2b8; /* Light blue */
+}
+
+.btn-info:hover {
+    -fx-background-color: #117a8b; /* Darker light blue */
+}
+
+.btn-light {
+    -fx-background-color: #f8f9fa; /* Light gray */
+    -fx-text-fill: #212529; /* Dark text */
+}
+
+.btn-light:hover {
+    -fx-background-color: #e2e6ea; /* Darker light gray */
+}
+
+.btn-dark {
+    -fx-background-color: #343a40; /* Dark gray */
+    -fx-text-fill: white; /* White text */
+}
+
+.btn-dark:hover {
+    -fx-background-color: #23272b; /* Darker gray */
+}
+
+.btn-full{
+    -fx-max-width: Infinity; /* Memastikan tombol mengisi lebar maksimum */
+    -fx-pref-width: 100%; 
+}
+
+/* Container Styles */
+.form-container {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 5;
+    -fx-padding: 30;
+    -fx-spacing: 20;
+}
+
+.form-header {
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 20 0;
+}
+
+.form-grid {
+    -fx-background-color: #f8f9fa;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 10;
+    -fx-hgap: 15;
+    -fx-vgap: 15;
+}
+
+/* Label Styles */
+.form-label {
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: bold;
+}
+
+/* Input Field Styles */
+.styled-text-field {
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 8;
+    -fx-font-size: 14px;
+    -fx-pref-width: 250;
+}
+
+.styled-password-field {
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 8;
+    -fx-font-size: 14px;
+    -fx-pref-width: 250;
+}
+
+.styled-combo-box {
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 4;
+    -fx-font-size: 14px;
+    -fx-pref-width: 250;
+}
+
+/* Button Styles */
+.button {
+    -fx-font-size: 14px;
+    -fx-padding: 8 15;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+
+.button-primary {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+}
+
+.button-warning {
+    -fx-background-color: #ffc107;
+    -fx-text-fill: #212529;
+}
+
+.button-info {
+    -fx-background-color: #17a2b8;
+    -fx-text-fill: white;
+}
+
+.button-default {
+    -fx-background-color: #6c757d;
+    -fx-text-fill: white;
+}
+
+/* Table Styles */
+.data-table {
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 5;
+    -fx-pref-height: 200;
+}

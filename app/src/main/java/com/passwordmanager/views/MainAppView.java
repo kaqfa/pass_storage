@@ -24,7 +24,7 @@ public class MainAppView {
 
     public Scene getScene() {
         showLoginDialog();
-        scene = new Scene(rootPanel, 800, 800);
+        scene = new Scene(rootPanel, 1000, 800);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         parentStage.setTitle("Aplikasi Penyimpanan Password");
         return scene;
@@ -63,5 +63,9 @@ public class MainAppView {
     public void logoutAction() {
         SessionManager.getInstance().clearSession();
         showLoginDialog();
+    }
+
+    public LeftPanelView getLeftPanelView() {
+        return leftPanelView;
     }
 }

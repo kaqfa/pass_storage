@@ -12,3 +12,24 @@ gradlew.bat
 local.properties
 # Ignore Android Studio project-specific cache directory
 .idea
+
+*.class
+*.iml
+*.ipr
+*.iws
+*.log
+*.war
+*.war.original
+*.jar
+*.orig
+*.bak
+*.swp
+*.swo
+*.exe
+*.dll
+*.so
+*.dylib
+*.classpath
+*.project
+*.settings
+*.factorypath

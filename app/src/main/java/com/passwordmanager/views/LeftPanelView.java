@@ -66,8 +66,8 @@ public class LeftPanelView {
         TreeItem<String> rootItem = new TreeItem<>("Folder Password");
         rootItem.setExpanded(true);
         
-        ObservableList<FolderModel> folders = folderViewModel.getFolders(user.id);
-        for (FolderModel folder : folders) {
+        ObservableList<FolderModel> folder_list = folderViewModel.getFolder(user.id);
+        for (FolderModel folder : folder_list) {
             rootItem.getChildren().add(new TreeItem<>(folder.name));
         }
         

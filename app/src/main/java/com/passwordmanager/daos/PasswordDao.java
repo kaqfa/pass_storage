@@ -14,7 +14,7 @@ public class PasswordDao extends BaseDao {
 
         query = "insert into passwordstore values (null, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
-            stmt = conn.prepareStatement(query);
+            stmt = this.conn.prepareStatement(query);
             stmt.setString(1, newPassword.name);
             stmt.setString(2, newPassword.username);
             stmt.setString(3, newPassword.getEncPassword());
@@ -23,8 +23,11 @@ public class PasswordDao extends BaseDao {
             stmt.setInt(6, newPassword.getCategoryCode());
             stmt.setInt(7, user.id);
             stmt.setInt(8, newPassword.folder.id);
+            
             id = stmt.executeUpdate();
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -35,7 +38,7 @@ public class PasswordDao extends BaseDao {
         ArrayList<PasswordStoreModel> dataPassword = new ArrayList<>();
         query = "select passwordstore.*, folder.id as f_id, folder.name as f_name "+
                 "from passwordstore "+
-                "join folders on (folders.id = passwordstore.folder_id) "+
+                "join folder on (folder.id = passwordstore.folder_id) "+
                 "where user_id = ?";
         try {
             stmt = conn.prepareStatement(query);
@@ -56,6 +59,8 @@ public class PasswordDao extends BaseDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return dataPassword;
     }
@@ -64,7 +69,7 @@ public class PasswordDao extends BaseDao {
         ArrayList<PasswordStoreModel> dataPassword = new ArrayList<>();
         query = "select passwordstore.*, folder.id as f_id, folder.name as f_name "+
                 "from passwordstore "+
-                "join folders on (folders.id = passwordstore.folder_id) "+
+                "join folder on (folder.id = passwordstore.folder_id) "+
                 "where (passwordstore.name like ? or username like ?) and user_id = ?";
         try {
             stmt = conn.prepareStatement(query);

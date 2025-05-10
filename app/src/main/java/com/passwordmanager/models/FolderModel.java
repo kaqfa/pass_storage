@@ -10,4 +10,9 @@ public class FolderModel {
         this.name = name;
         this.userId = userId;
     }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

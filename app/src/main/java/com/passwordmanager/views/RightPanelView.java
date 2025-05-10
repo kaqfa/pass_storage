@@ -15,13 +15,15 @@ public class RightPanelView {
     private final VBox rightPanel;
     private final Pane mainPanel;
     private final UserModel user;
-    private final MainAppView mainAppView;
+    private final MainAppView parentView;
+    private final LeftPanelView leftPanelView;  // Tambahkan field ini
 
-    public RightPanelView(MainAppView mainAppView) {
+    public RightPanelView(MainAppView parentView) {
         this.rightPanel = new VBox();
         this.mainPanel = new VBox();
         this.user = (UserModel) SessionManager.getInstance().getSesData("user");
-        this.mainAppView = mainAppView;
+        this.parentView = parentView;
+        this.leftPanelView = parentView.getLeftPanelView();  // Ambil referensi dari MainAppView
         initialize();
     }
 
@@ -49,10 +51,10 @@ public class RightPanelView {
         editProfileButton.getStyleClass().addAll("btn", "btn-warning");
         logoutButton.getStyleClass().addAll("btn", "btn-danger");
 
-        addFolderButton.setOnAction(event -> mainAppView.showFolderDialog());
+        addFolderButton.setOnAction(event -> parentView.showFolderDialog());
         addPasswordButton.setOnAction(event -> showPasswordForm());
         editProfileButton.setOnAction(event -> showProfileForm());
-        logoutButton.setOnAction(event -> mainAppView.logoutAction());
+        logoutButton.setOnAction(event -> parentView.logoutAction());
 
         toolbar.getChildren().addAll(addFolderButton, addPasswordButton, editProfileButton, logoutButton);
         return toolbar;
@@ -77,7 +79,7 @@ public class RightPanelView {
     }
 
     private void showPasswordForm() {
-        PasswordFormView passwordFormView = new PasswordFormView();
+        PasswordFormView passwordFormView = new PasswordFormView(leftPanelView);  // Teruskan referensi leftPanelView
         mainPanel.getChildren().setAll(passwordFormView.getView());
     }
 

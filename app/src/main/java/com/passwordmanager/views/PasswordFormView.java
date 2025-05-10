@@ -5,6 +5,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import com.passwordmanager.models.FolderModel;
 import com.passwordmanager.models.PasswordStoreModel;
 import com.passwordmanager.models.UserModel;
+import com.passwordmanager.utils.PanelObserver;
 import com.passwordmanager.utils.SessionManager;
 import com.passwordmanager.viewmodels.FolderViewModel;
 import com.passwordmanager.viewmodels.PasswordViewModel;
@@ -19,6 +20,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
@@ -27,14 +30,18 @@ public class PasswordFormView {
     private final FolderViewModel folderViewModel;
     private final PasswordViewModel passwordViewModel;
     private final UserModel user;
-    private final LeftPanelView leftPanelView;
+    // private final LeftPanelView leftPanelView;
+    private PasswordStoreModel currentPassword;
+    private boolean isEditMode = false;
+    private PanelObserver observer;
 
-    public PasswordFormView(LeftPanelView leftPanelView) {
+    public PasswordFormView(PanelObserver observer) {
+        this.observer = observer;
         this.components = new FormComponents();
         this.folderViewModel = new FolderViewModel();
         this.user = (UserModel) SessionManager.getInstance().getSesData("user");
         this.passwordViewModel = new PasswordViewModel(this.user);
-        this.leftPanelView = leftPanelView;
+        // this.leftPanelView = leftPanelView;
         
         initializeView();
     }
@@ -154,9 +161,6 @@ public class PasswordFormView {
             .bindBidirectional(passwordViewModel.folderProperty);
     }
 
-    private void setupEventHandlers() {
-        components.saveButton.setOnAction(event -> handleSave());
-    }
 
     private void handleSave() {
         FolderModel selectedFolder = components.folderComboBox.getValue();
@@ -168,7 +172,7 @@ public class PasswordFormView {
         String result = passwordViewModel.savePassword(selectedFolder.id);
         if (result == null) {
             showSuccess("Password berhasil disimpan!");
-            leftPanelView.refreshFolderTree();
+            observer.onPasswordUpdated();
         } else {
             showError(result);
         }
@@ -222,5 +226,72 @@ public class PasswordFormView {
             button.setGraphic(new FontIcon(iconCode));
             return button;
         }
+    }
+
+    private void setupEventHandlers() {
+        components.saveButton.setOnAction(event -> {
+            if (isEditMode && currentPassword != null) {
+                handleUpdate();
+            } else {
+                handleSave();
+            }
+        });
+    
+        components.editButton.setOnAction(event -> {
+            isEditMode = true;
+            setFieldsEditable(true);
+            components.saveButton.setDisable(false);
+            components.editButton.setDisable(true);
+        });
+    
+        components.copyPasswordButton.setOnAction(event -> {
+            if (currentPassword != null) {
+                final Clipboard clipboard = Clipboard.getSystemClipboard();
+                final ClipboardContent content = new ClipboardContent();
+                content.putString(currentPassword.getPassword());
+                clipboard.setContent(content);
+                showSuccess("Password berhasil disalin ke clipboard!");
+            }
+        });
+    }
+
+    public void loadPasswordData(PasswordStoreModel password, boolean readOnly) {
+        currentPassword = password;
+        isEditMode = !readOnly;
+        
+        passwordViewModel.loadPasswordData(password);
+        
+        setFieldsEditable(!readOnly);
+        components.saveButton.setDisable(readOnly);
+        components.editButton.setDisable(!readOnly);
+        components.copyPasswordButton.setDisable(false);
+    }
+
+    private void setFieldsEditable(boolean editable) {
+        components.accountNameField.setEditable(editable);
+        components.usernameField.setEditable(editable);
+        components.passwordField.setEditable(editable);
+        components.confirmPasswordField.setEditable(editable);
+        components.categoryComboBox.setDisable(!editable);
+        components.folderComboBox.setDisable(!editable);
+    }
+
+    private void handleUpdate() {
+        String result = passwordViewModel.updatePassword(currentPassword);
+        if (result == null) {
+            showSuccess("Password berhasil diupdate!");
+            observer.onPasswordUpdated();  // Gunakan observer pattern
+            clearForm();
+        } else {
+            showError(result);
+        }
+    }
+
+    private void clearForm() {
+        passwordViewModel.clearForm();
+        currentPassword = null;
+        isEditMode = false;
+        components.editButton.setDisable(true);
+        components.copyPasswordButton.setDisable(true);
     }
 }

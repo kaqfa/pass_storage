@@ -1,7 +1,9 @@
 package com.passwordmanager.viewmodels;
 
 import com.passwordmanager.daos.FolderDao;
+import com.passwordmanager.daos.PasswordDao;
 import com.passwordmanager.models.FolderModel;
+import com.passwordmanager.models.PasswordStoreModel;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,5 +30,10 @@ public class FolderViewModel {
         folder.clear();
         folder.addAll(folderDao.getfolderByUserId(userId));
         return folder;
+    }
+
+    public ObservableList<PasswordStoreModel> getPasswordsByFolder(int folderId) {
+        PasswordDao passwordDao = new PasswordDao();
+        return FXCollections.observableArrayList(passwordDao.getPasswordsByFolder(folderId));
     }
 }

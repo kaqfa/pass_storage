@@ -1,6 +1,8 @@
 package com.passwordmanager.views;
 
+import com.passwordmanager.models.PasswordStoreModel;
 import com.passwordmanager.models.UserModel;
+import com.passwordmanager.utils.PanelObserver;
 import com.passwordmanager.utils.SessionManager;
 
 import javafx.scene.Scene;
@@ -8,7 +10,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class MainAppView {
+public class MainAppView implements PanelObserver{
     private final Stage parentStage;
     private Scene scene;
     private final BorderPane rootPanel;
@@ -32,7 +34,11 @@ public class MainAppView {
 
     public void redrawAll() {
         leftPanelView = new LeftPanelView();
-        rightPanelView = new RightPanelView(this);
+        rightPanelView = new RightPanelView();
+        
+        // Set observer
+        leftPanelView.setObserver(this);
+        rightPanelView.setObserver(this);
         
         rootPanel.setLeft(leftPanelView.getView());
         rootPanel.setCenter(rightPanelView.getView());
@@ -67,5 +73,24 @@ public class MainAppView {
 
     public LeftPanelView getLeftPanelView() {
         return leftPanelView;
+    }
+
+    public RightPanelView getRightPanelView() {
+        return rightPanelView;
+    }
+
+    @Override
+    public void onPasswordSelected(PasswordStoreModel password) {
+        rightPanelView.showPasswordDetail(password);
+    }
+
+    @Override
+    public void onPasswordUpdated() {
+        leftPanelView.refreshFolderTree();
+    }
+
+    @Override
+    public void onFolderUpdated() {
+        leftPanelView.refreshFolderTree();
     }
 }

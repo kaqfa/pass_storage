@@ -130,4 +130,30 @@ public class PasswordDao extends BaseDao {
         return 0;
     }
     
+    public ArrayList<PasswordStoreModel> getPasswordsByFolder(int folderId) {
+        ArrayList<PasswordStoreModel> passwords = new ArrayList<>();
+        query = "SELECT * FROM passwordstore WHERE folder_id = ?";
+        
+        try {
+            stmt = conn.prepareStatement(query);
+            stmt.setInt(1, folderId);
+            result = stmt.executeQuery();
+            
+            while (result.next()) {
+                passwords.add(new PasswordStoreModel(
+                    result.getInt("id"),
+                    result.getString("name"),
+                    result.getString("username"),
+                    result.getString("password"),
+                    result.getString("hashkey"),
+                    result.getDouble("score"),
+                    result.getInt("category")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return passwords;
+    }
 }

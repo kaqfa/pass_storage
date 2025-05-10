@@ -1,6 +1,8 @@
 package com.passwordmanager.views;
 
+import com.passwordmanager.models.PasswordStoreModel;
 import com.passwordmanager.models.UserModel;
+import com.passwordmanager.utils.PanelObserver;
 import com.passwordmanager.utils.SessionManager;
 
 import javafx.geometry.Insets;
@@ -15,15 +17,13 @@ public class RightPanelView {
     private final VBox rightPanel;
     private final Pane mainPanel;
     private final UserModel user;
-    private final MainAppView parentView;
-    private final LeftPanelView leftPanelView;  // Tambahkan field ini
+    private LeftPanelView leftPanelView;  // Tambahkan field ini
+    private PanelObserver observer;
 
-    public RightPanelView(MainAppView parentView) {
+    public RightPanelView() {
         this.rightPanel = new VBox();
         this.mainPanel = new VBox();
         this.user = (UserModel) SessionManager.getInstance().getSesData("user");
-        this.parentView = parentView;
-        this.leftPanelView = parentView.getLeftPanelView();  // Ambil referensi dari MainAppView
         initialize();
     }
 
@@ -35,6 +35,17 @@ public class RightPanelView {
         createMainPanel();
         rightPanel.getChildren().addAll(menuPanel, mainPanel);
     }
+
+    public void setObserver(PanelObserver observer) {
+        this.observer = observer;
+    }
+    
+    // Ketika password berhasil diupdate
+    // private void onPasswordSaved() {
+    //     if (observer != null) {
+    //         observer.onPasswordUpdated();
+    //     }
+    // }
 
     private HBox createMenuPanel() {
         HBox toolbar = new HBox(10);
@@ -51,10 +62,10 @@ public class RightPanelView {
         editProfileButton.getStyleClass().addAll("btn", "btn-warning");
         logoutButton.getStyleClass().addAll("btn", "btn-danger");
 
-        addFolderButton.setOnAction(event -> parentView.showFolderDialog());
+        // addFolderButton.setOnAction(event -> parentView.showFolderDialog());
         addPasswordButton.setOnAction(event -> showPasswordForm());
         editProfileButton.setOnAction(event -> showProfileForm());
-        logoutButton.setOnAction(event -> parentView.logoutAction());
+        // logoutButton.setOnAction(event -> parentView.logoutAction());
 
         toolbar.getChildren().addAll(addFolderButton, addPasswordButton, editProfileButton, logoutButton);
         return toolbar;
@@ -79,7 +90,7 @@ public class RightPanelView {
     }
 
     private void showPasswordForm() {
-        PasswordFormView passwordFormView = new PasswordFormView(leftPanelView);  // Teruskan referensi leftPanelView
+        PasswordFormView passwordFormView = new PasswordFormView(this.observer);  
         mainPanel.getChildren().setAll(passwordFormView.getView());
     }
 
@@ -94,5 +105,11 @@ public class RightPanelView {
 
     public void setMainContent(Pane content) {
         mainPanel.getChildren().setAll(content);
+    }
+
+    public void showPasswordDetail(PasswordStoreModel password) {
+        PasswordFormView passwordFormView = new PasswordFormView(this.observer);
+        passwordFormView.loadPasswordData(password, true);
+        mainPanel.getChildren().setAll(passwordFormView.getView());
     }
 }

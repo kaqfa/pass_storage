@@ -63,6 +63,48 @@ public class PasswordViewModel {
         
         return "Gagal menyimpan password!";
     }
+
+    public String updatePassword(PasswordStoreModel password) {
+        // Validasi input
+        if (isAnyFieldEmpty()) {
+            return "Semua field harus diisi!";
+        }
+        
+        if (!isPasswordValid()) {
+            return "Password minimal 8 karakter!";
+        }
+        
+        if (!isPasswordMatch()) {
+            return "Password dan konfirmasi password tidak sama!";
+        }
+        
+        if (!isUsernameValid()) {
+            return "Username minimal 4 karakter!";
+        }
+        
+        // Update data password
+        password.name = accountNameProperty.get();
+        password.username = usernameProperty.get();
+        password.setPassword(passwordProperty.get());
+        password.setCategory(getCategoryIndex());
+        password.folder = folderProperty.get();
+        
+        if (passwordDao.updatePass(password) > 0) {
+            clearForm();
+            return null; // null berarti sukses
+        }
+        
+        return "Gagal mengupdate password!";
+    }
+
+    public void loadPasswordData(PasswordStoreModel password) {
+        accountNameProperty.set(password.name);
+        usernameProperty.set(password.username);
+        passwordProperty.set(password.getPassword());
+        confirmPasswordProperty.set(password.getPassword());
+        categoryProperty.set(password.getCategory());
+        folderProperty.set(password.folder);
+    }
     
     private boolean isAnyFieldEmpty() {
         return accountNameProperty.get() == null || accountNameProperty.get().isEmpty() ||
@@ -93,7 +135,7 @@ public class PasswordViewModel {
         return java.util.Arrays.asList(PasswordStoreModel.CATEGORIES).indexOf(category);
     }
     
-    private void clearForm() {
+    public void clearForm() {
         accountNameProperty.set("");
         usernameProperty.set("");
         passwordProperty.set("");
